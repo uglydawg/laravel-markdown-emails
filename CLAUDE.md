@@ -122,16 +122,28 @@ php artisan migrate
 
 ### Button Usage Examples
 
+#### Button Types
+The package includes a `ButtonType` enum that defines the available button types:
+- `ButtonType::PRIMARY` - Default primary button styling
+- `ButtonType::SECONDARY` - Secondary button styling  
+- `ButtonType::SUCCESS` - Success/confirmation button styling
+- `ButtonType::DANGER` - Danger/destructive action button styling
+- `ButtonType::WARNING` - Warning button styling
+- `ButtonType::CUSTOM` - Custom button styling (configure in config file)
+
 #### Creating Buttons
 ```php
+use uglydawg\LaravelMarkdownEmails\Enums\ButtonType;
+
 $renderer = new MarkdownEmailRenderer($config);
 
-// Create different button types
-$primaryButton = $renderer->createButton('Get Started', 'https://example.com/get-started', 'primary');
-$secondaryButton = $renderer->createButton('Learn More', 'https://example.com/learn-more', 'secondary');
-$successButton = $renderer->createButton('Confirm', 'https://example.com/confirm', 'success');
-$dangerButton = $renderer->createButton('Delete', 'https://example.com/delete', 'danger');
-$warningButton = $renderer->createButton('Warning', 'https://example.com/warning', 'warning');
+// Create different button types using enum
+$primaryButton = $renderer->createButton('Get Started', 'https://example.com/get-started', ButtonType::PRIMARY);
+$secondaryButton = $renderer->createButton('Learn More', 'https://example.com/learn-more', ButtonType::SECONDARY);
+$successButton = $renderer->createButton('Confirm', 'https://example.com/confirm', ButtonType::SUCCESS);
+$dangerButton = $renderer->createButton('Delete', 'https://example.com/delete', ButtonType::DANGER);
+$warningButton = $renderer->createButton('Warning', 'https://example.com/warning', ButtonType::WARNING);
+$customButton = $renderer->createButton('Custom', 'https://example.com/custom', ButtonType::CUSTOM);
 ```
 
 #### Using Buttons in Markdown
