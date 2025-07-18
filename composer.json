@@ -1,6 +1,7 @@
 {
     "name": "uglydawg/laravel-markdown-emails",
     "description": "A Laravel package for generating emails using Markdown with dynamic content support",
+    "version": "1.0.0",
     "type": "library",
     "keywords": [
         "laravel",
