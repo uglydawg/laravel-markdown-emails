@@ -82,6 +82,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            border: 1px solid #ddd;
         }
 
         .content th,
@@ -89,11 +90,28 @@
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
         }
 
         .content th {
             background-color: #f8f9fa;
             font-weight: bold;
+            text-align: center;
+        }
+
+        .content td {
+            text-align: center;
+        }
+
+        /* Button styles for email compatibility */
+        .content a[style*="background-color"] {
+            display: inline-block !important;
+            padding: 12px 24px !important;
+            text-decoration: none !important;
+            border-radius: 5px !important;
+            font-weight: bold !important;
+            margin: 10px 0 !important;
+            color: white !important;
         }
 
         .footer {

@@ -38,3 +38,10 @@ diff.txt
 .scribe/
 resources/scribe/*
 phpstan-baseline.neon
+
+# Test files and debug output
+debug-output.html
+test-*.php
+example-*.php
+src/mail.html
+src/TestCommand.php

@@ -31,5 +31,8 @@ abstract class TestCase extends BaseTestCase
             'database' => ':memory:',
             'prefix' => '',
         ]);
+        
+        // Override package database settings for testing
+        $app['config']->set('markdown-emails.database.connection', 'testing');
     }
 }

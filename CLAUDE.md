@@ -63,6 +63,7 @@ composer test-parallel
    - Core rendering logic for converting Markdown to HTML
    - Integrates with Blade templating system
    - Handles variable substitution and template processing
+   - **Generates styled buttons with configurable types and comprehensive security protection**
 
 ### Database Structure
 
@@ -77,7 +78,8 @@ composer test-parallel
 ### Configuration
 
 - `config/markdown-emails.php`: Package configuration file
-- Likely contains settings for markdown parsing, default templates, and rendering options
+- Contains settings for markdown parsing, default templates, and rendering options
+- **Includes button styling configuration for primary, secondary, success, danger, and warning button types**
 
 ## Package Development Workflow
 
@@ -116,4 +118,81 @@ php artisan vendor:publish --provider="YourNamespace\MarkdownEmails\MarkdownEmai
 ### Running Migrations (for package users)
 ```bash
 php artisan migrate
+```
+
+### Button Usage Examples
+
+#### Creating Buttons
+```php
+$renderer = new MarkdownEmailRenderer($config);
+
+// Create different button types
+$primaryButton = $renderer->createButton('Get Started', 'https://example.com/get-started', 'primary');
+$secondaryButton = $renderer->createButton('Learn More', 'https://example.com/learn-more', 'secondary');
+$successButton = $renderer->createButton('Confirm', 'https://example.com/confirm', 'success');
+$dangerButton = $renderer->createButton('Delete', 'https://example.com/delete', 'danger');
+$warningButton = $renderer->createButton('Warning', 'https://example.com/warning', 'warning');
+```
+
+#### Using Buttons in Markdown
+```markdown
+# Welcome Email
+
+Click the button below to get started:
+
+{{ primary_button }}
+
+Or learn more about our features:
+
+{{ secondary_button }}
+```
+
+#### Button Configuration
+```php
+// In config/markdown-emails.php
+'buttons' => [
+    'primary' => [
+        'background_color' => '#007bff',
+        'text_color' => 'white',
+        'padding' => '12px 24px',
+        'border_radius' => '5px',
+        'font_weight' => 'bold',
+        'margin' => '10px 0',
+    ],
+    'custom' => [
+        'background_color' => '#ff6b6b',
+        'text_color' => '#ffffff',
+        'padding' => '16px 32px',
+        'border_radius' => '8px',
+        'font_weight' => 'normal',
+        'margin' => '15px 0',
+    ]
+]
+```
+
+## Security Features
+
+### Button Security
+- **URL Validation**: Blocks dangerous protocols (javascript:, data:, vbscript:, file:, about:)
+- **CSS Sanitization**: Prevents CSS injection in button styling configuration
+- **XSS Protection**: HTML escaping for button text and URLs
+- **DoS Protection**: Length limits on CSS values to prevent resource exhaustion
+- **Whitelist-based**: Only allows safe URL protocols (https:, http:, mailto:, tel:, relative paths, anchors)
+
+### Safe URL Patterns
+```php
+// These URLs are allowed:
+https://example.com/safe
+http://example.com/safe  
+mailto:user@example.com
+tel:+1234567890
+/relative/path
+#anchor
+
+// These URLs are blocked and replaced with '#':
+javascript:alert('xss')
+data:text/html,<script>alert('xss')</script>
+vbscript:alert('xss')
+file:///etc/passwd
+about:blank
 ```

@@ -9,8 +9,6 @@ return [
     |--------------------------------------------------------------------------
     */
     'template' => [
-        'business_name' => env('MARKDOWN_EMAILS_BUSINESS_NAME', 'Your Business Name'),
-        'logo_url' => env('MARKDOWN_EMAILS_LOGO_URL', '/images/logo.png'),
         'logo_width' => env('MARKDOWN_EMAILS_LOGO_WIDTH', 200),
         'logo_height' => env('MARKDOWN_EMAILS_LOGO_HEIGHT', 80),
         'base_view' => 'markdown-emails::base-template',
@@ -33,9 +31,10 @@ return [
     |--------------------------------------------------------------------------
     */
     'security' => [
-        'sanitize_content' => true,
+        'sanitize_content' => false, // Allow button HTML and styled content
         'allowed_html_tags' => [
-            'p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+            'p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+            'table', 'thead', 'tbody', 'tr', 'th', 'td', 'del', 'pre', 'code', 'blockquote'
         ],
     ],
 
@@ -50,6 +49,54 @@ return [
             'table',
             'strikethrough',
             'autolink',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Button Styling Configuration
+    |--------------------------------------------------------------------------
+    */
+    'buttons' => [
+        'primary' => [
+            'background_color' => '#3498db',
+            'text_color' => 'white',
+            'padding' => '12px 24px',
+            'border_radius' => '5px',
+            'font_weight' => 'bold',
+            'margin' => '10px 0',
+        ],
+        'secondary' => [
+            'background_color' => '#95a5a6',
+            'text_color' => 'white',
+            'padding' => '12px 24px',
+            'border_radius' => '5px',
+            'font_weight' => 'bold',
+            'margin' => '10px 0',
+        ],
+        'success' => [
+            'background_color' => '#27ae60',
+            'text_color' => 'white',
+            'padding' => '12px 24px',
+            'border_radius' => '5px',
+            'font_weight' => 'bold',
+            'margin' => '10px 0',
+        ],
+        'danger' => [
+            'background_color' => '#e74c3c',
+            'text_color' => 'white',
+            'padding' => '12px 24px',
+            'border_radius' => '5px',
+            'font_weight' => 'bold',
+            'margin' => '10px 0',
+        ],
+        'warning' => [
+            'background_color' => '#f39c12',
+            'text_color' => 'white',
+            'padding' => '12px 24px',
+            'border_radius' => '5px',
+            'font_weight' => 'bold',
+            'margin' => '10px 0',
         ],
     ],
 

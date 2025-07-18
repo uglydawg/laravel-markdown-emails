@@ -40,7 +40,7 @@ class MarkdownEmail extends Model
 
     public function getConnectionName()
     {
-        return config('markdown-emails.database.connection');
+        return config('markdown-emails.database.connection', parent::getConnectionName());
     }
 
     public function getTable()
