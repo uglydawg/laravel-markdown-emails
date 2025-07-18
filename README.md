@@ -15,7 +15,7 @@ A Laravel package for generating beautiful emails using Markdown with dynamic co
 ## Requirements
 
 - PHP 8.1 or higher
-- Laravel 10.0 or 11.0
+- Laravel 10.0, 11.0, or 12.0
 - League CommonMark 2.0+
 
 ## Installation
