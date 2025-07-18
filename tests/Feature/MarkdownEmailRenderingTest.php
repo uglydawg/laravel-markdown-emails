@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\DB;
 use uglydawg\LaravelMarkdownEmails\MarkdownEmailRenderer;
+use uglydawg\LaravelMarkdownEmails\Enums\ButtonType;
 
 beforeEach(function () {
     DB::beginTransaction();
@@ -467,7 +468,7 @@ it('can create primary button with default styling', function () {
     $renderer = new MarkdownEmailRenderer($config);
 
     // Act
-    $button = $renderer->createButton('Click Me', 'https://example.com', 'primary');
+    $button = $renderer->createButton('Click Me', 'https://example.com', ButtonType::PRIMARY);
 
     // Assert
     expect($button)
@@ -490,7 +491,7 @@ it('can create secondary button with correct styling', function () {
     $renderer = new MarkdownEmailRenderer($config);
 
     // Act
-    $button = $renderer->createButton('Secondary Action', 'https://example.com/secondary', 'secondary');
+    $button = $renderer->createButton('Secondary Action', 'https://example.com/secondary', ButtonType::SECONDARY);
 
     // Assert
     expect($button)
@@ -511,7 +512,7 @@ it('can create success button with correct styling', function () {
     $renderer = new MarkdownEmailRenderer($config);
 
     // Act
-    $button = $renderer->createButton('Success', 'https://example.com/success', 'success');
+    $button = $renderer->createButton('Success', 'https://example.com/success', ButtonType::SUCCESS);
 
     // Assert
     expect($button)
@@ -531,7 +532,7 @@ it('can create danger button with correct styling', function () {
     $renderer = new MarkdownEmailRenderer($config);
 
     // Act
-    $button = $renderer->createButton('Delete', 'https://example.com/delete', 'danger');
+    $button = $renderer->createButton('Delete', 'https://example.com/delete', ButtonType::DANGER);
 
     // Assert
     expect($button)
@@ -551,7 +552,7 @@ it('can create warning button with correct styling', function () {
     $renderer = new MarkdownEmailRenderer($config);
 
     // Act
-    $button = $renderer->createButton('Warning', 'https://example.com/warning', 'warning');
+    $button = $renderer->createButton('Warning', 'https://example.com/warning', ButtonType::WARNING);
 
     // Assert
     expect($button)
@@ -571,7 +572,7 @@ it('sanitizes button text and URL to prevent XSS', function () {
     $renderer = new MarkdownEmailRenderer($config);
 
     // Act
-    $button = $renderer->createButton('<script>alert("xss")</script>', 'javascript:alert("xss")', 'primary');
+    $button = $renderer->createButton('<script>alert("xss")</script>', 'javascript:alert("xss")', ButtonType::PRIMARY);
 
     // Assert
     expect($button)
@@ -580,7 +581,7 @@ it('sanitizes button text and URL to prevent XSS', function () {
         ->and($button)->toContain('href="#"'); // Malicious URL should be replaced with #
 });
 
-it('defaults to primary styling for unknown button types', function () {
+it('enforces valid button types using enum', function () {
     // Arrange
     $config = array_merge(config('markdown-emails'), [
         'template' => [
@@ -590,12 +591,20 @@ it('defaults to primary styling for unknown button types', function () {
     ]);
     $renderer = new MarkdownEmailRenderer($config);
 
-    // Act
-    $button = $renderer->createButton('Unknown Type', 'https://example.com', 'unknown');
+    // Act & Assert - Test that all enum values work
+    $primaryButton = $renderer->createButton('Primary', 'https://example.com', ButtonType::PRIMARY);
+    $secondaryButton = $renderer->createButton('Secondary', 'https://example.com', ButtonType::SECONDARY);
+    $successButton = $renderer->createButton('Success', 'https://example.com', ButtonType::SUCCESS);
+    $dangerButton = $renderer->createButton('Danger', 'https://example.com', ButtonType::DANGER);
+    $warningButton = $renderer->createButton('Warning', 'https://example.com', ButtonType::WARNING);
+    $customButton = $renderer->createButton('Custom', 'https://example.com', ButtonType::CUSTOM);
 
-    // Assert
-    expect($button)
-        ->toContain('background-color: #3498db'); // Primary color
+    expect($primaryButton)->toContain('Primary')
+        ->and($secondaryButton)->toContain('Secondary')
+        ->and($successButton)->toContain('Success')
+        ->and($dangerButton)->toContain('Danger')
+        ->and($warningButton)->toContain('Warning')
+        ->and($customButton)->toContain('Custom');
 });
 
 it('uses custom button configuration when provided', function () {
@@ -619,7 +628,7 @@ it('uses custom button configuration when provided', function () {
     $renderer = new MarkdownEmailRenderer($config);
 
     // Act
-    $button = $renderer->createButton('Custom Button', 'https://example.com', 'custom');
+    $button = $renderer->createButton('Custom Button', 'https://example.com', ButtonType::CUSTOM);
 
     // Assert
     expect($button)
@@ -651,7 +660,7 @@ it('blocks dangerous URL protocols', function () {
 
     foreach ($dangerousUrls as $url) {
         // Act
-        $button = $renderer->createButton('Test', $url, 'primary');
+        $button = $renderer->createButton('Test', $url, ButtonType::PRIMARY);
 
         // Assert
         expect($button)->toContain('href="#"'); // Should be replaced with safe placeholder
@@ -679,7 +688,7 @@ it('allows safe URL protocols', function () {
 
     foreach ($safeUrls as $url) {
         // Act
-        $button = $renderer->createButton('Test', $url, 'primary');
+        $button = $renderer->createButton('Test', $url, ButtonType::PRIMARY);
 
         // Assert
         expect($button)->toContain('href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '"');
@@ -707,7 +716,7 @@ it('sanitizes CSS values to prevent CSS injection', function () {
     $renderer = new MarkdownEmailRenderer($config);
 
     // Act
-    $button = $renderer->createButton('Test', 'https://example.com', 'malicious');
+    $button = $renderer->createButton('Test', 'https://example.com', ButtonType::CUSTOM);
 
     // Assert - Check that malicious CSS is stripped from the style attribute
     preg_match('/style="([^"]*)"/', $button, $matches);
@@ -742,7 +751,7 @@ it('limits CSS value length to prevent DoS', function () {
     $renderer = new MarkdownEmailRenderer($config);
 
     // Act
-    $button = $renderer->createButton('Test', 'https://example.com', 'long_value');
+    $button = $renderer->createButton('Test', 'https://example.com', ButtonType::CUSTOM);
 
     // Assert - Values should be truncated to prevent DoS
     expect(strlen($button))->toBeLessThan(1000); // Reasonable limit
@@ -768,7 +777,7 @@ it('handles invalid URLs gracefully', function () {
 
     foreach ($invalidUrls as $url) {
         // Act
-        $button = $renderer->createButton('Test', $url, 'primary');
+        $button = $renderer->createButton('Test', $url, ButtonType::PRIMARY);
 
         // Assert
         expect($button)->toContain('href="#"'); // Should be replaced with safe placeholder

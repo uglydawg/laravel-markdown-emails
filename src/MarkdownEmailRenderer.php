@@ -14,6 +14,7 @@ use League\CommonMark\MarkdownConverter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Exception;
+use uglydawg\LaravelMarkdownEmails\Enums\ButtonType;
 
 class MarkdownEmailRenderer
 {
@@ -178,7 +179,7 @@ class MarkdownEmailRenderer
     /**
      * Generate a styled button for email templates
      */
-    public function createButton(string $text, string $url, string $type = 'primary'): string
+    public function createButton(string $text, string $url, ButtonType $type = ButtonType::PRIMARY): string
     {
         // Validate and sanitize URL
         $sanitizedUrl = $this->sanitizeUrl($url);
@@ -195,9 +196,9 @@ class MarkdownEmailRenderer
     /**
      * Get button styles based on type
      */
-    protected function getButtonStyles(string $type): string
+    protected function getButtonStyles(ButtonType $type): string
     {
-        $buttonConfig = $this->config['buttons'][$type] ?? $this->config['buttons']['primary'] ?? [];
+        $buttonConfig = $this->config['buttons'][$type->value] ?? $this->config['buttons']['primary'] ?? [];
         
         $styles = [
             'display: inline-block',
