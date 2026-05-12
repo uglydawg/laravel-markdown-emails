@@ -1,3 +1,10 @@
+# NOTE: Dependabot runs in a GitHub-managed "Dependabot Updates" workflow we
+# do not control. As of 2026-05, that workflow uses `github/dependabot-action@main`
+# which still runs on Node.js 20 and emits a deprecation warning on every run.
+# We cannot pin or upgrade the action ourselves; GitHub will bump it before the
+# 2026-06-02 enforcement date. The repo variable
+# `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true` is set as belt-and-suspenders but
+# does not affect this GitHub-managed workflow.
 version: 2
 updates:
   - package-ecosystem: composer
