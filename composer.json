@@ -1,7 +1,7 @@
 {
     "name": "uglydawg/laravel-markdown-emails",
     "description": "A Laravel package for generating emails using Markdown with dynamic content support",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "library",
     "keywords": [
         "laravel",
@@ -24,8 +24,8 @@
         "league/commonmark": "^2.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.0",
-        "phpunit/phpunit": "^10.0",
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
+        "phpunit/phpunit": "^10.0|^11.0",
         "pestphp/pest": "*"
     },
     "autoload": {

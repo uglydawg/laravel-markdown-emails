@@ -63,7 +63,7 @@ class MarkdownEmailRenderer
     /**
      * Render markdown content to HTML email
      */
-    public function render(string $markdown, array $variables = [], string $template = null): string
+    public function render(string $markdown, array $variables = [], ?string $template = null): string
     {
         try {
             // Validate that all variables in markdown are provided
@@ -155,7 +155,7 @@ class MarkdownEmailRenderer
     /**
      * Create and optionally store a markdown email
      */
-    public function create(string $subject, string $markdown, array $recipients, array $variables = [], string $template = null): MarkdownEmail
+    public function create(string $subject, string $markdown, array $recipients, array $variables = [], ?string $template = null): MarkdownEmail
     {
         $htmlContent = $this->render($markdown, $variables, $template);
         
