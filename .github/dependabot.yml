@@ -7,6 +7,13 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - dependencies
+    ignore:
+      # phpunit is a dev-only dependency; cc-api consumers ship their own
+      # phpunit lockfile and run their own audits. Dependabot security
+      # updates here fail to resolve because the pkg supports multiple
+      # Laravel major versions simultaneously, which leaves dependabot
+      # unable to pick a single lockfile state.
+      - dependency-name: phpunit/phpunit
 
   - package-ecosystem: github-actions
     directory: /
